@@ -7,15 +7,24 @@ function openInvitation() {
   opening.style.opacity = '0';
   opening.style.transform = 'translateY(-30px)';
   
+  // Mainkan musik saat ada interaksi user (wajib sinkron dengan event click agar tidak diblokir browser modern)
+  const music = document.getElementById("music");
+  const icon = document.getElementById("musicIcon");
+  
+  if (music) {
+    music.play()
+      .then(() => {
+        if(icon) icon.innerText = "🎵";
+      })
+      .catch(err => {
+        console.log("Audio play dicegah oleh browser:", err);
+        if(icon) icon.innerText = "🔇";
+      });
+  }
+
   setTimeout(() => {
     opening.classList.add("hidden");
     content.classList.remove("hidden");
-    
-    // Mainkan musik otomatis (jika diizinkan browser)
-    const music = document.getElementById("music");
-    if(music) {
-      music.play().catch(err => console.log("Audio autoplay prevented by browser"));
-    }
   }, 600); // Sesuaikan dengan durasi transisi CSS
 }
 
