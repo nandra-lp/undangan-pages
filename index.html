@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Undangan Pernikahan</title>
+
+    <!-- Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- OPENING -->
+    <section id="opening">
+      <h2>Undangan Pernikahan</h2>
+      <h1>Gascaro & Gascari</h1>
+
+      <p>Kepada Yth:</p>
+      <h3 id="guestName">Tamu Undangan</h3>
+
+      <button onclick="openInvitation()">Buka Undangan</button>
+    </section>
+
+    <!-- CONTENT -->
+    <section id="content" class="hidden">
+      <h1>Gascaro & Gascari</h1>
+      <p>Sabtu, 20 April 2026</p>
+
+      <div id="countdown"></div>
+
+      <!-- LOKASI -->
+      <div class="card">
+        <h3>Lokasi</h3>
+        <p>Gedung Serbaguna Bahagia</p>
+        <a href="https://maps.google.com" target="_blank">Lihat Maps</a>
+      </div>
+
+      <!-- RSVP -->
+      <div class="card">
+        <h3>Konfirmasi Kehadiran</h3>
+
+        <input type="text" id="name" placeholder="Nama Anda" />
+
+        <label for="status">Konfirmasi Kehadiran</label>
+        <select id="status" name="status">
+          <option value="Hadir">Hadir</option>
+          <option value="Tidak Hadir">Tidak Hadir</option>
+        </select>
+
+        <button onclick="sendRSVP()">Kirim RSVP</button>
+      </div>
+    </section>
+
+    <!-- MUSIC -->
+    <audio id="music" loop preload="auto">
+      <source src="assets/music.mp3" type="audio/mp3" />
+    </audio>
+
+    <button id="musicBtn" onclick="toggleMusic()">🎵</button>
+
+    <!-- JS -->
+    <script src="script.js"></script>
+  </body>
+</html>
