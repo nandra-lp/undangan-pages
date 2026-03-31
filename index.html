@@ -3,11 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Undangan Pernikahan</title>
+    <title>Undangan Pernikahan Gascaro & Gascari</title>
 
     <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
 
@@ -17,52 +19,70 @@
 
   <body>
     <!-- OPENING -->
-    <section id="opening">
-      <h2>Undangan Pernikahan</h2>
-      <h1>Gascaro & Gascari</h1>
-
-      <p>Kepada Yth:</p>
-      <h3 id="guestName">Tamu Undangan</h3>
-
-      <button onclick="openInvitation()">Buka Undangan</button>
+    <section id="opening" class="hero-section">
+      <div class="hero-content">
+        <p class="subtitle">Undangan Pernikahan</p>
+        <h1 class="title">Gascaro & Gascari</h1>
+        <div class="guest-info">
+          <p>Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+          <h3 id="guestName">Tamu Undangan</h3>
+        </div>
+        <button class="btn-primary" onclick="openInvitation()">Buka Undangan</button>
+      </div>
     </section>
 
     <!-- CONTENT -->
-    <section id="content" class="hidden">
-      <h1>Gascaro & Gascari</h1>
-      <p>Sabtu, 20 April 2026</p>
-
-      <div id="countdown"></div>
+    <main id="content" class="hidden">
+      <section class="main-header">
+        <p class="subtitle fade-in">The Wedding Of</p>
+        <h1 class="title fade-in">Gascaro & Gascari</h1>
+        <p class="date fade-in">Sabtu, 20 April 2026</p>
+        <div id="countdown" class="fade-in"></div>
+      </section>
 
       <!-- LOKASI -->
-      <div class="card">
-        <h3>Lokasi</h3>
-        <p>Gedung Serbaguna Bahagia</p>
-        <a href="https://maps.google.com" target="_blank">Lihat Maps</a>
-      </div>
+      <section class="section-card fade-in">
+        <h2>Lokasi Acara</h2>
+        <div class="card glass">
+          <p class="venue">Gedung Serbaguna Bahagia</p>
+          <p class="address">Jl. Kenangan Indah No. 12, Jakarta Selatan</p>
+          <a class="btn-secondary" href="https://maps.google.com" target="_blank">Lihat di Google Maps</a>
+        </div>
+      </section>
 
       <!-- RSVP -->
-      <div class="card">
-        <h3>Konfirmasi Kehadiran</h3>
-
-        <input type="text" id="name" placeholder="Nama Anda" />
-
-        <label for="status">Konfirmasi Kehadiran</label>
-        <select id="status" name="status">
-          <option value="Hadir">Hadir</option>
-          <option value="Tidak Hadir">Tidak Hadir</option>
-        </select>
-
-        <button onclick="sendRSVP()">Kirim RSVP</button>
-      </div>
-    </section>
+      <section class="section-card fade-in">
+        <h2>Konfirmasi Kehadiran</h2>
+        <div class="card glass">
+          <div class="form-group">
+            <input type="text" id="name" placeholder="Nama Lengkap Anda" />
+          </div>
+          <div class="form-group">
+            <label for="status" class="sr-only">Status Kehadiran</label>
+            <select id="status" name="status">
+              <option value="" disabled selected>Pilih Kehadiran</option>
+              <option value="Hadir">Akan Hadir</option>
+              <option value="Tidak Hadir">Berhalangan Hadir</option>
+            </select>
+          </div>
+          <button class="btn-primary" onclick="sendRSVP()">Kirim Pesan RSVP</button>
+        </div>
+      </section>
+      
+      <footer>
+        <p>Merupakan suatu kehormatan dan kebahagiaan bagi kami <br> apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
+        <p class="footer-names">Gascaro & Gascari</p>
+      </footer>
+    </main>
 
     <!-- MUSIC -->
     <audio id="music" loop preload="auto">
       <source src="assets/music.mp3" type="audio/mp3" />
     </audio>
 
-    <button id="musicBtn" onclick="toggleMusic()">🎵</button>
+    <button id="musicBtn" class="floating-btn" onclick="toggleMusic()" aria-label="Toggle Music">
+      <span id="musicIcon">🎵</span>
+    </button>
 
     <!-- JS -->
     <script src="script.js"></script>

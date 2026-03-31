@@ -1,47 +1,101 @@
-// buka undangan
+// Buka undangan dan mulai animasi transisi
 function openInvitation() {
-  document.getElementById("opening").classList.add("hidden");
-  document.getElementById("content").classList.remove("hidden");
-  document.getElementById("music").play();
+  const opening = document.getElementById("opening");
+  const content = document.getElementById("content");
+  
+  // Efek transisi smooth out
+  opening.style.opacity = '0';
+  opening.style.transform = 'translateY(-30px)';
+  
+  setTimeout(() => {
+    opening.classList.add("hidden");
+    content.classList.remove("hidden");
+    
+    // Mainkan musik otomatis (jika diizinkan browser)
+    const music = document.getElementById("music");
+    if(music) {
+      music.play().catch(err => console.log("Audio autoplay prevented by browser"));
+    }
+  }, 600); // Sesuaikan dengan durasi transisi CSS
 }
 
-// ambil nama dari URL
+// Ambil parameter nama tamu dari URL (?to=Nama)
 const params = new URLSearchParams(window.location.search);
 const guest = params.get("to");
 
 if (guest) {
-  document.getElementById("guestName").innerText = guest;
-  document.getElementById("name").value = guest;
+  const guestNameElement = document.getElementById("guestName");
+  const nameInput = document.getElementById("name");
+  
+  if(guestNameElement) guestNameElement.innerText = guest;
+  if(nameInput) nameInput.value = guest;
 }
 
-// countdown
+// Countdown Timer Acara
 const eventDate = new Date("April 20, 2026 10:00:00").getTime();
 
 setInterval(() => {
   const now = new Date().getTime();
-  const d = eventDate - now;
+  const distance = eventDate - now;
 
-  const days = Math.floor(d / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  // Jika waktu belum habis
+  if (distance > 0) {
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-  document.getElementById("countdown").innerHTML = `${days} Hari ${hours} Jam`;
+    const countdownEl = document.getElementById("countdown");
+    if(countdownEl) {
+      countdownEl.innerHTML = `
+        <div class="cd-box"><span class="cd-num">${days}</span><span class="cd-text">Hari</span></div>
+        <div class="cd-box"><span class="cd-num">${hours}</span><span class="cd-text">Jam</span></div>
+        <div class="cd-box"><span class="cd-num">${minutes}</span><span class="cd-text">Menit</span></div>
+        <div class="cd-box"><span class="cd-num">${seconds}</span><span class="cd-text">Detik</span></div>
+      `;
+    }
+  } else {
+    // Jika acara sudah berlangsung
+    const countdownEl = document.getElementById("countdown");
+    if(countdownEl) {
+      countdownEl.innerHTML = `<div class="cd-box"><span class="cd-num">H-Hari</span><span class="cd-text">Acara Sedang Berlangsung</span></div>`;
+    }
+  }
 }, 1000);
 
-// RSVP ke WhatsApp
+// RSVP WhatsApp Handler
 function sendRSVP() {
-  const name = document.getElementById("name").value;
+  const name = document.getElementById("name").value.trim();
   const status = document.getElementById("status").value;
 
-  const phone = "6281234567890"; // GANTI NOMOR KAMU
+  if(!name) {
+    alert("Mohon isi nama lengkap Anda.");
+    return;
+  }
+  
+  if(!status) {
+    alert("Mohon pilih konfirmasi kehadiran Anda.");
+    return;
+  }
 
-  const message = `Halo, saya ${name}, konfirmasi: ${status}`;
+  const phone = "6281234567890"; // GANTI NOMOR KAMU DI SINI
+
+  const message = `Halo, saya *${name}*. Saya mengonfirmasi bahwa saya *${status}* pada acara pernikahan Anda. Terima kasih!`;
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
   window.open(url, "_blank");
 }
 
-// musik
+// Toggle Musik (Play/Pause)
 function toggleMusic() {
   const music = document.getElementById("music");
-  music.paused ? music.play() : music.pause();
+  const icon = document.getElementById("musicIcon");
+  
+  if(music.paused) {
+    music.play();
+    icon.innerText = "🎵";
+  } else {
+    music.pause();
+    icon.innerText = "🔇";
+  }
 }
