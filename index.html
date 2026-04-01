@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Undangan Pernikahan Gascaro & Gascari yang akan diselenggarakan pada Sabtu, 20 April 2026." />
+    <meta name="theme-color" content="#fdfbf7" />
     <title>Undangan Pernikahan Gascaro & Gascari</title>
 
     <!-- Font -->
@@ -17,7 +19,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body>
+  <body class="locked">
     <!-- OPENING -->
     <section id="opening" class="hero-section">
       <div class="hero-content">
@@ -27,7 +29,7 @@
           <p>Kepada Yth. Bapak/Ibu/Saudara/i:</p>
           <h3 id="guestName">Tamu Undangan</h3>
         </div>
-        <button class="btn-primary" onclick="openInvitation()">
+        <button class="btn-primary" onclick="openInvitation()" aria-label="Buka Undangan Pernikahan">
           Buka Undangan
         </button>
       </div>
@@ -36,32 +38,54 @@
     <!-- CONTENT -->
     <main id="content" class="hidden">
       <section class="main-header">
-        <p class="subtitle fade-in">The Wedding Of</p>
-        <h1 class="title fade-in">Gascaro & Gascari</h1>
-        <p class="date fade-in">Sabtu, 20 April 2026</p>
-        <div id="countdown" class="fade-in"></div>
+        <p class="subtitle reveal">The Wedding Of</p>
+        <h1 class="title reveal">Gascaro & Gascari</h1>
+        <p class="date reveal">Sabtu, 20 April 2026</p>
+        <div id="countdown" class="reveal">
+          <!-- Countdown elements will be injected here via JS -->
+          <div class="cd-box"><span class="cd-num">0</span><span class="cd-text">Hari</span></div>
+          <div class="cd-box"><span class="cd-num">0</span><span class="cd-text">Jam</span></div>
+          <div class="cd-box"><span class="cd-num">0</span><span class="cd-text">Menit</span></div>
+          <div class="cd-box"><span class="cd-num">0</span><span class="cd-text">Detik</span></div>
+        </div>
       </section>
 
       <!-- LOKASI -->
-      <section class="section-card fade-in">
+      <section class="section-card reveal">
         <h2>Lokasi Acara</h2>
         <div class="card glass">
           <p class="venue">Gedung Serbaguna Bahagia</p>
           <p class="address">Jl. Kenangan Indah No. 12, Jakarta Selatan</p>
+          
+          <div class="map-container">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126915.75336067098!2d106.74602927233816!3d-6.251417551468641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e945e34b9d%3A0x100c5e82dd4b820!2sJakarta%20Selatan%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1714529381736!5m2!1sid!2sid" 
+              width="100%" 
+              height="250" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Peta Lokasi Gedung Serbaguna Bahagia">
+            </iframe>
+          </div>
+
           <a
             class="btn-secondary"
-            href="https://maps.google.com"
+            href="https://maps.app.goo.gl/3QWjE"
             target="_blank"
-            >Lihat di Google Maps</a
+            rel="noopener noreferrer"
+            >Buka di Aplikasi Maps</a
           >
         </div>
       </section>
 
       <!-- RSVP -->
-      <section class="section-card fade-in">
+      <section class="section-card reveal">
         <h2>Konfirmasi Kehadiran</h2>
         <div class="card glass">
           <div class="form-group">
+            <label for="name" class="sr-only">Nama Lengkap</label>
             <input type="text" id="name" placeholder="Nama Lengkap Anda" />
           </div>
           <div class="form-group">
@@ -78,7 +102,7 @@
         </div>
       </section>
 
-      <footer>
+      <footer class="reveal">
         <p>
           Merupakan suatu kehormatan dan kebahagiaan bagi kami <br />
           apabila Bapak/Ibu/Saudara/i berkenan hadir.

@@ -2,12 +2,13 @@
 function openInvitation() {
   const opening = document.getElementById("opening");
   const content = document.getElementById("content");
+  const body = document.body;
   
   // Efek transisi smooth out
   opening.style.opacity = '0';
-  opening.style.transform = 'translateY(-30px)';
+  opening.style.transform = 'translateY(-50px) scale(0.95)';
   
-  // Mainkan musik saat ada interaksi user (wajib sinkron dengan event click agar tidak diblokir browser modern)
+  // Mainkan musik (Wajib lewat interaksi user)
   const music = document.getElementById("music");
   const icon = document.getElementById("musicIcon");
   
@@ -22,10 +23,17 @@ function openInvitation() {
       });
   }
 
+  // Tampilkan konten dan lepas lock scroll
   setTimeout(() => {
     opening.classList.add("hidden");
     content.classList.remove("hidden");
-  }, 600); // Sesuaikan dengan durasi transisi CSS
+    body.classList.remove("locked"); // Allow scrolling
+    // Trigger scroll observer sedikit delay agar animasinya pas
+    setTimeout(() => {
+      content.style.opacity = '1';
+      observeElements();
+    }, 100);
+  }, 800);
 }
 
 // Ambil parameter nama tamu dari URL (?to=Nama)
@@ -40,37 +48,45 @@ if (guest) {
   if(nameInput) nameInput.value = guest;
 }
 
-// Countdown Timer Acara
+// Countdown Timer Acara yang Dioptimalkan
 const eventDate = new Date("April 20, 2026 10:00:00").getTime();
+let countdownInterval;
 
-setInterval(() => {
-  const now = new Date().getTime();
-  const distance = eventDate - now;
+function initCountdown() {
+  const countdownEl = document.getElementById("countdown");
+  if(!countdownEl) return;
 
-  // Jika waktu belum habis
-  if (distance > 0) {
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  // Render initial skeleton once
+  countdownEl.innerHTML = `
+    <div class="cd-box"><span class="cd-num" id="cd-days">0</span><span class="cd-text">Hari</span></div>
+    <div class="cd-box"><span class="cd-num" id="cd-hours">0</span><span class="cd-text">Jam</span></div>
+    <div class="cd-box"><span class="cd-num" id="cd-minutes">0</span><span class="cd-text">Menit</span></div>
+    <div class="cd-box"><span class="cd-num" id="cd-seconds">0</span><span class="cd-text">Detik</span></div>
+  `;
 
-    const countdownEl = document.getElementById("countdown");
-    if(countdownEl) {
-      countdownEl.innerHTML = `
-        <div class="cd-box"><span class="cd-num">${days}</span><span class="cd-text">Hari</span></div>
-        <div class="cd-box"><span class="cd-num">${hours}</span><span class="cd-text">Jam</span></div>
-        <div class="cd-box"><span class="cd-num">${minutes}</span><span class="cd-text">Menit</span></div>
-        <div class="cd-box"><span class="cd-num">${seconds}</span><span class="cd-text">Detik</span></div>
-      `;
+  const elDays = document.getElementById("cd-days");
+  const elHours = document.getElementById("cd-hours");
+  const elMinutes = document.getElementById("cd-minutes");
+  const elSeconds = document.getElementById("cd-seconds");
+
+  countdownInterval = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = eventDate - now;
+
+    if (distance > 0) {
+      elDays.innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+      elHours.innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      elMinutes.innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      elSeconds.innerText = Math.floor((distance % (1000 * 60)) / 1000);
+    } else {
+      clearInterval(countdownInterval);
+      countdownEl.innerHTML = `<div class="cd-box" style="width: 100%"><span class="cd-num">Acara</span><span class="cd-text">Sedang Berlangsung</span></div>`;
     }
-  } else {
-    // Jika acara sudah berlangsung
-    const countdownEl = document.getElementById("countdown");
-    if(countdownEl) {
-      countdownEl.innerHTML = `<div class="cd-box"><span class="cd-num">H-Hari</span><span class="cd-text">Acara Sedang Berlangsung</span></div>`;
-    }
-  }
-}, 1000);
+  }, 1000);
+}
+
+// Inisialisasi countdown
+initCountdown();
 
 // RSVP WhatsApp Handler
 function sendRSVP() {
@@ -87,7 +103,7 @@ function sendRSVP() {
     return;
   }
 
-  const phone = "6281234567890"; // GANTI NOMOR KAMU DI SINI
+  const phone = "6281234567890"; // Ganti nomor di sini
 
   const message = `Halo, saya *${name}*. Saya mengonfirmasi bahwa saya *${status}* pada acara pernikahan Anda. Terima kasih!`;
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
@@ -107,4 +123,27 @@ function toggleMusic() {
     music.pause();
     icon.innerText = "🔇";
   }
+}
+
+// Intersection Observer (Scroll Reveal Animation)
+function observeElements() {
+  const reveals = document.querySelectorAll('.reveal');
+  
+  const observerOptions = {
+    threshold: 0.15, // Pemicu saat 15% elemen terlihat
+    rootMargin: "0px 0px -50px 0px" // Pemicu sebelum sampai dasar banget
+  };
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        observer.unobserve(entry.target); // Hanya animasi 1x
+      }
+    });
+  }, observerOptions);
+
+  reveals.forEach(reveal => {
+    observer.observe(reveal);
+  });
 }
